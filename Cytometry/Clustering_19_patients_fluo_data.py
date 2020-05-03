@@ -5,14 +5,6 @@ Created on Fri Apr  3 15:06:06 2020
 @author: eliej
 """
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Feb 27 10:11:51 2020
-
-@author: elie
-"""
-
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
