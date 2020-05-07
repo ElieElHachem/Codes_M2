@@ -9,7 +9,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import random
 
+
+
 #On génère la première loi normale et donc la première colonne de données
+
+"""
+Patient 1-8 : mu_type=[2,3,8,10,8,10.4,8]
+Patient 9-13 :  mu_type=[2,3,8,4,8,10.4,8]
+Patient 14-16 : mu_type=[2,3,8,10,8,7,8]
+Patient 17-20 : mu_type=[2,3,2,10,8,10.4,8]
+"""
 
 mu_type=[2,3,8,10,8,10.4,9] #pour les differentes lois normales
 sigma_type=[1,1,1,1,1,1,1]  #Eccartype pour les differentes lois normales
@@ -53,6 +62,7 @@ for i in range(len(data2_column)):
         third_column.append(r)
 #Dataframe finale
 data2_column["Third_column"]=third_column
-data2_column.to_csv ('Patient_21_random.csv', index = False, header=True)
+data2_column["Patient_Phénotype"]=4
+data2_column.to_csv ('Patient_20_random.csv', index = False, header=True)
 
 
