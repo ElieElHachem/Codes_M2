@@ -35,31 +35,33 @@ os.chdir('C:\\Users\\eliej\\Desktop\\Documents_folder_stage\\Documents\\Cytometr
 extension = 'csv'
 all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
 combined_csv = pd.concat([pd.read_csv(f) for f in all_filenames ])
-
-real_sampling=combined_csv.apply(zscore)
+sample=combined_csv.iloc[:,0:3]
+real_sampling=sample.apply(zscore)
 adata=anndata.AnnData(real_sampling)
 
 adata.raw = adata
 sc.tl.pca(adata, svd_solver='arpack')
-sc.pl.pca(adata)
 pca_coordinates = adata.obsm['X_pca'] 
 kmeans = KMeans(n_clusters=3,random_state=0).fit(pca_coordinates) 
 adata.obs['kmeans'] = kmeans.labels_ 
 adata.obs['kmeans'] = adata.obs['kmeans'].astype(str)
-sc.pl.pca(adata, color='kmeans')
 
+adata.obs['Patient'] = combined_csv['Patient_Phénotype'].values
 
 sc.pp.neighbors(adata, n_neighbors= 10, n_pcs=7)
+sc.tl.leiden(adata, resolution=0.1)
 sc.tl.umap(adata)
-sc.pl.umap(adata)
+sc.pl.pca(adata, color= ['kmeans','leiden','Patient'])
 
 
 umap_coordinates = adata.obsm['X_umap'] 
 kmeans = KMeans(n_clusters=3,random_state=0).fit(umap_coordinates) 
-adata.obs['kmeans'] = kmeans.labels_ 
-adata.obs['kmeans'] = adata.obs['kmeans'].astype(str)
+adata.obs['umap_kmeans'] = kmeans.labels_ 
+adata.obs['umap_kmeans'] = adata.obs['umap_kmeans'].astype(str)
 
-sc.pl.umap(adata, color='kmeans')
-sc.pl.pca(adata, color='kmeans')
+adata.obs['Patient'] = combined_csv['Patient_Phénotype'].values
+
+sc.pl.umap(adata, color=['umap_kmeans','leiden','Patient'])
+
 
 
